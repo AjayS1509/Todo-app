@@ -10,7 +10,7 @@ import useDeviceType from "../useDeviceType";
 
 export default function TodoCard() {
   const [data, setData] = useState([]);
-  const isMobile = useDeviceType();
+  //const isMobile = useDeviceType();
   const state = {
     loading: true,
     overlayCall: false,
@@ -67,21 +67,23 @@ export default function TodoCard() {
 
   function handleAddData(e) {
     e.preventDefault();
-    const last_data = data[data.length - 1];
-    let obj = {
-      userId: visability.userId,
-      id: Number(last_data.id + 1),
-      title: visability.title,
-      completed: visability.checked,
-    };
-    setData((d) => [...d, obj]);
-    setVisability((prev) => ({
-      ...prev,
-      overlayCall: false,
-      userId: "",
-      title: "",
-      checked: false,
-    }));
+    if (visability.userId.length != 0 && visability.title.length != 0) {
+      const last_data = data[data.length - 1];
+      let obj = {
+        userId: visability.userId,
+        id: Number(last_data.id + 1),
+        title: visability.title,
+        completed: visability.checked,
+      };
+      setData((d) => [...d, obj]);
+      setVisability((prev) => ({
+        ...prev,
+        overlayCall: false,
+        userId: "",
+        title: "",
+        checked: false,
+      }));
+    }
   }
 
   if (visability.loading)
@@ -89,17 +91,12 @@ export default function TodoCard() {
       <>
         <div className="text-center max-w-fit mx-auto">
           <div className="flex items-center justify-center gap-2">
-            <Skeleton height={30} width={isMobile ? 100 : 200} />
-            <Skeleton height={30} width={isMobile ? 100 : 200} />
+            <Skeleton height={30} width={150} />
+            <Skeleton height={30} width={150} />
           </div>
           <br />
-          <Skeleton height={35} width={isMobile ? 300 : 600} className="mb-3" />
-          <Skeleton
-            height={30}
-            width={isMobile ? 300 : 600}
-            count={10}
-            className="mb-1"
-          />
+          <Skeleton height={35} width={400} className="mb-3" />
+          <Skeleton height={30} width={400} count={10} className="mb-1" />
         </div>
       </>
     );
@@ -181,7 +178,7 @@ export default function TodoCard() {
         </button>
       </div>
 
-      <div className="mx-2 my-auto max-w-fit border rounded-lg text-sm lg:m-auto">
+      <div className="mx-2 my-auto max-w-fit border rounded-lg text-sm h-[80vh] overflow-auto lg:m-auto lg:h-[73vh]">
         <table className="m-auto">
           <thead>
             <tr className=" border-b-[1px] rounded-lg overflow-hidden">
@@ -193,22 +190,32 @@ export default function TodoCard() {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, i) => (
-              <tr key={i} className=" border-b-[1px]">
-                <td className="px-3 py-2 text-center lg:px-4">{item.id}</td>
-                <td className="px-3 py-2 lg:px-4">{item.userId}</td>
-                <td className="px-3 py-2 lg:px-4">{item.title}</td>
-                <td className="px-3 py-2 text-center lg:px-4">
-                  {String(item.completed)}
-                </td>
-                <td
-                  className="cursor-pointer"
-                  onClick={() => handleDelete(item)}
-                >
-                  <DeleteIcon />
-                </td>
+            {data.length == 0 ? (
+              <tr>
+                <td></td>
+                <td></td>
+                <td className=" text-red-400 pt-6">No data found !!</td>
+                <td></td>
+                <td></td>
               </tr>
-            ))}
+            ) : (
+              data.map((item, i) => (
+                <tr key={i} className=" border-b-[1px]">
+                  <td className="px-3 py-2 text-center lg:px-4">{item.id}</td>
+                  <td className="px-3 py-2 lg:px-4">{item.userId}</td>
+                  <td className="px-3 py-2 lg:px-4">{item.title}</td>
+                  <td className="px-3 py-2 text-center lg:px-4">
+                    {String(item.completed)}
+                  </td>
+                  <td
+                    className="cursor-pointer"
+                    onClick={() => handleDelete(item)}
+                  >
+                    <DeleteIcon />
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
