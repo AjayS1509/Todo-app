@@ -10,6 +10,8 @@ module.exports = {
       colors: {
         primary: "#6c7ae0",
         overlay: "rgba(25, 25, 25, 0.45)",
+        scrollColor: "rgba(0,0,0,0.3)",
+        bgScrollbar: "#F5F5F5",
       },
     },
   },

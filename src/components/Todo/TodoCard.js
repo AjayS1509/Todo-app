@@ -6,7 +6,8 @@ import useDebounce from "../useDebounce";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Cross from "../icons/Cross";
-import useDeviceType from "../useDeviceType";
+//import useDeviceType from "../useDeviceType";
+//import "../../app/globals.css";
 
 export default function TodoCard() {
   const [data, setData] = useState([]);
@@ -178,10 +179,13 @@ export default function TodoCard() {
         </button>
       </div>
 
-      <div className="mx-2 my-auto max-w-fit border rounded-lg text-sm h-[80vh] overflow-auto lg:m-auto lg:h-[73vh]">
+      <div
+        className="mx-2 my-auto max-w-fit border rounded-lg text-sm h-[80vh] overflow-auto lg:m-auto lg:h-[73vh] overflow-y-scroll"
+        id="style-7"
+      >
         <table className="m-auto">
           <thead>
-            <tr className=" border-b-[1px] rounded-lg overflow-hidden">
+            <tr className=" border-b-[1px] rounded-lg overflow-hidden bg-primary text-white">
               <th className="px-3 py-2 lg:px-4">Id</th>
               <th className="px-3 py-2 lg:px-4">userId</th>
               <th className="px-3 py-2 lg:px-4">title</th>
