@@ -5,9 +5,12 @@ import Overlay from "../overlay/Overlay";
 import useDebounce from "../useDebounce";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Cross from "../icons/Cross";
+import useDeviceType from "../useDeviceType";
 
 export default function TodoCard() {
   const [data, setData] = useState([]);
+  const isMobile = useDeviceType();
   const state = {
     loading: true,
     overlayCall: false,
@@ -34,7 +37,6 @@ export default function TodoCard() {
   }, []);
 
   useEffect(() => {
-    console.log("call");
     if (
       (debounceSearchValue && debounceSearchValue.length != 0,
       orignalData.current != null)
@@ -65,7 +67,6 @@ export default function TodoCard() {
 
   function handleAddData(e) {
     e.preventDefault();
-    console.log("id");
     const last_data = data[data.length - 1];
     let obj = {
       userId: visability.userId,
@@ -88,12 +89,17 @@ export default function TodoCard() {
       <>
         <div className="text-center max-w-fit mx-auto">
           <div className="flex items-center justify-center gap-2">
-            <Skeleton height={30} width={200} />
-            <Skeleton height={30} width={200} />
+            <Skeleton height={30} width={isMobile ? 100 : 200} />
+            <Skeleton height={30} width={isMobile ? 100 : 200} />
           </div>
           <br />
-          <Skeleton height={35} width={600} className="mb-3" />
-          <Skeleton height={30} width={600} count={10} className="mb-1" />
+          <Skeleton height={35} width={isMobile ? 300 : 600} className="mb-3" />
+          <Skeleton
+            height={30}
+            width={isMobile ? 300 : 600}
+            count={10}
+            className="mb-1"
+          />
         </div>
       </>
     );
@@ -103,6 +109,20 @@ export default function TodoCard() {
       {visability.overlayCall && (
         <Overlay>
           <div className=" w-fit inset-auto z-0 bg-white shadow-slate-300 overflow-x-hidden overflow-y-auto p-4 rounded-xl">
+            <span
+              className="flex justify-end cursor-pointer"
+              onClick={() =>
+                setVisability((prev) => ({
+                  ...prev,
+                  overlayCall: false,
+                  userId: "",
+                  title: "",
+                  checked: false,
+                }))
+              }
+            >
+              <Cross />
+            </span>
             <h4 className=" text-center text-lg font-semibold">Add Data</h4>
             <form action="" onSubmit={handleAddData}>
               <input
@@ -139,7 +159,7 @@ export default function TodoCard() {
         <div>
           <input
             type="text"
-            placeholder="title"
+            placeholder="Search"
             value={visability.searchValue}
             onChange={(e) =>
               setVisability((prev) => ({
@@ -161,28 +181,28 @@ export default function TodoCard() {
         </button>
       </div>
 
-      <div className="m-auto max-w-fit border rounded-lg text-sm">
+      <div className="mx-2 my-auto max-w-fit border rounded-lg text-sm lg:m-auto">
         <table className="m-auto">
           <thead>
             <tr className=" border-b-[1px] rounded-lg overflow-hidden">
-              <th className="px-4 py-2">Id</th>
-              <th className="px-4 py-2">userId</th>
-              <th className="px-4 py-2">title</th>
-              <th className="px-4 py-2">completed</th>
-              <th className="px-4 py-2"></th>
+              <th className="px-3 py-2 lg:px-4">Id</th>
+              <th className="px-3 py-2 lg:px-4">userId</th>
+              <th className="px-3 py-2 lg:px-4">title</th>
+              <th className="px-3 py-2 lg:px-4">completed</th>
+              <th className="px-3 py-2 lg:px-4"></th>
             </tr>
           </thead>
           <tbody>
             {data.map((item, i) => (
               <tr key={i} className=" border-b-[1px]">
-                <td className="px-4 py-2 text-center">{item.id}</td>
-                <td className="px-4 py-2">{item.userId}</td>
-                <td className="px-4 py-2">{item.title}</td>
-                <td className="px-4 py-2 text-center">
+                <td className="px-3 py-2 text-center lg:px-4">{item.id}</td>
+                <td className="px-3 py-2 lg:px-4">{item.userId}</td>
+                <td className="px-3 py-2 lg:px-4">{item.title}</td>
+                <td className="px-3 py-2 text-center lg:px-4">
                   {String(item.completed)}
                 </td>
                 <td
-                  className=" cursor-pointer"
+                  className="cursor-pointer"
                   onClick={() => handleDelete(item)}
                 >
                   <DeleteIcon />
